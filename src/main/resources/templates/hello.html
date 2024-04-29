@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xml:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+             margin: 0;
+            background-color: #000000;
+        }
+        h1 {
+            font-size: 5em;
+            text-align: center;
+            background: linear-gradient(90deg,#ea8584 ,#ea8585, #81d2da, #b4cf80, #c373cf, purple);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+            animation: gradient 5s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="${msg}"></h1>
+</body>
+</html>

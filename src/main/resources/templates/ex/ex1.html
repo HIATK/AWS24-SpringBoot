@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>출력테스트</title>
+</head>
+<body>
+    <h4>EL표기법 [[${list}]]</h4>
+    <hr>
+    <h4 th:text="'Thymeleaf 표기법'+${list}"></h4>
+
+        <!-- Thymeleaf 주석처리 -->
+        <!--/*
+                주석영역
+                처리하는 이유는 tymeleaf 로 파싱처리 될때 삭제처리하기 때문에...
+                파싱처리를 하려고할때 html 주석이 아니면 인식을 못햐서 문제가 생길수 있다.
+        */-->
+<!--/* */--        <h3 th:each="${sos}">SOS</h3>   */-->
+    <!--/*<div>
+        <h1>AAA</h1>
+    </div>        */-->
+
+                <!-- th:with를 이용환 변수 선언 -->
+    <div th:with="num1 = ${0}, num2 = ${20}">
+            <h4 th:text="${num1 + num2}"></h4>
+
+    </div>
+    <!-- 반복문과 제어문 처리 ...
+           반복문 처리 방식 2가지
+           1. 반복이 필요한 태그에 "th:each"를 적용하는 방법
+           2. <th:block>이라는 별도의 태그를 이용하는 방법
+           -->
+    <!--반복문-->
+    <h2>===== 제어문 =====</h2>
+
+        <!-- th:each -->
+            <ul>
+                <li th:each="str: ${list}" th:text="${str}"/>
+            </ul>
+<!-- th:block -->
+<ul>
+    <th:block th:each="str : ${list}">
+        <li>[[${str}]]</li>
+    </th:block>
+</ul>
+
+<!-- 반복문에 status 변수  index, count ,size,반환타입이 boolean-> first,last ,add ,even을 이요할수 있다 -->
+    <h2>index</h2>
+
+    <ul>
+    <li th:each="str,status : ${list}">
+        [[${status.index}]] -- [[${str}]]
+    </li>
+</ul>
+    <h2>count</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}">
+            [[${status.count}]] -- [[${str}]]
+        </li>
+    </ul>
+
+    <h2>size</h2>
+
+
+    <ul>
+        <li th:each="str,status : ${list}">
+            [[${status.size}]] -- [[${str}]]
+        </li>
+    </ul>
+    <h2>=====Boolean Type=====</h2>
+    <h2>odd(홀수)</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}">
+            [[${status.odd}]] -- [[${str}]]
+        </li>
+    </ul>
+    <h2>even(짝수)</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}">
+            [[${status.even}]] -- [[${str}]]
+        </li>
+    </ul>
+    <h2>first</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}">
+            [[${status.first}]] -- [[${str}]]
+        </li>
+    </ul>
+    <h2>last</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}">
+            [[${status.last}]] -- [[${str}]]
+        </li>
+    </ul>
+
+    <h2>===== 제어문 =====</h2>
+<!-- 제어문 : th:if, th:unless, th:switch
+            th:if, th:unless(거짓일때만 실행시킴 if문의 반대임 )
+            -->
+    <h2>if</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}"><!-- ODD는 홀수다-->
+            <span th:if="${status.odd}">ODD -- [[${status.count}]]-- [[${str}]]</span>
+        </li>
+    </ul>
+
+    <h2>unless</h2>
+
+    <ul>
+        <li th:each="str,status : ${list}"> <!-- EVEN은짝수다-->
+            <span th:unless="${status.odd}">EVEN -- [[${status.count}]]-- [[${str}]]</span>
+        </li>
+    </ul>
+
+    <h2>?를 이용한 이항 혹은 삼항 연산처리</h2>
+    <ul>
+        <li th:each="str,status: ${list}">
+            <span th:text="${status.odd}?'ODD --- '+${str}"></span>
+        </li>
+    </ul>
+
+    <h2> 삼항 연산처리</h2>
+
+    <ul>
+        <li th:each="str,status: ${list}">
+            <span th:text="${status.odd}?'ODD --- '+${str}:'EVEN---'+${str}"></span>
+        </li>
+    </ul>
+
+    <!--th:switch th:case 와같이 사용해서 스위치문을 처리할 때 사용-->
+    <h2>th:switch(case)문</h2>
+    <ul>
+        <li th:each="str,status: ${list}">
+            <th:block th:switch="${status.index % 3}"><!-- 3으로 나누는 수는 0,1,2 만 나온다.-->
+                <span th:case="0">0</span>
+                <span th:case="1">1</span>
+                <span th:case="2">2</span>
+            </th:block>
+        </li>
+    </ul>
+
+    <h5>Tymeleaf 링크 처리 ...</h5>
+<!-- JSP를 이용할때에 "/"로 시작하는 것과 특정 프로젝트의 경로로 시작하는 모든것을 고려해야하는것이
+번거롭다 하지만 타임리프는 @으로 링크를 작성하기만 하면 된디ㅏ-->
+    <a th:href="@{/hello}">GO to /hello</a>
+
+<!-- 링크의 쿼치 스트링 처리 -->
+    <a th:href="@{/hello(name='AAA', age=16)}">GO to /hello</a>
+    <!-- url인코딩과 공백문자를 처리해줌-->
+    <a th:href="@{/hello(name='한글문자', age=16)}">GO to /hello</a>
+    <a th:href="@{/hello(types=${ {'AA', 'BB','CC' }}, age= 16)}">Go to /hello</a> </body>
+</html>
