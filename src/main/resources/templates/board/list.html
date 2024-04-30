@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout/basic.html}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">     <!--~{ } -->
+
 
 <div layout:fragment="content">
-    <!--검색화면 추가 설정   -->
+    <!-- 검색 화면 추가 -->
     <div class="row mt-3">
         <form action="/board/list" method="get">
             <div class="col">
@@ -18,10 +19,9 @@ layout:decorate="~{layout/basic.html}">
                             <option value="w" th:selected="${pageRequestDTO.type == 'w'}">작성자</option>
                             <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목 내용</option>
                             <option value="tcw" th:selected="${pageRequestDTO.type == 'tcw'}">제목 내용 작성자</option>
-
                         </select>
                     </div>
-                    <input type ="text"  class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
                         <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
@@ -30,105 +30,126 @@ layout:decorate="~{layout/basic.html}">
             </div>
         </form>
     </div>
-    <!--목록 정보 출력  -->
+
+    <!-- 목록 정보 출력 -->
     <div class="row mt-3">
         <div class="col">
             <div class="card">
                 <div class="card-header">
                     Board List
-
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Board List</h5>
 
                     <table class="table">
                         <thead> <!-- 테이블 목록 -->
-                        <rt>
+                        <tr>
                             <th scope="col">Bno</th>
                             <th scope="col">Title</th>
                             <th scope="col">Writer</th>
                             <th scope="col">RegDate</th>
-                        </rt>
-                        </thead><!-- 테이블 목록 -->
-                        <tbody><!-- 테이블의 실제 출력 데이터-->
-                        <tr th:each="dto:${responseDTO.dtoList}">
-                            <th scope="row">[[${dto.bno}]]</th> <!-- 게시글 번호 들어감 -->
-                            <td>
-                                [[${dto.title}]]
-                            </td>
-                            <td>
-                                [[${dto.writer}]]
-                            </td>
-                            <td>
-                                <!--/* #temporals 유틸리티 객체 포맷형태를 정해준다
-                                심플 데이트 외우는게 좋다.*/-->
-                                [[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]
-                            </td>
                         </tr>
-                        </tbody><!-- 테이블의 실제 출력 데이터 끝-->
+                        </thead>
+                        <tbody th:with="link = ${pageRequestDTO.getLink()}"> <!-- 테이블에 실제 출력 데이터 -->
+                        <tr th:each="dto:${responseDTO.dtoList}" >      <!-- dtoList 값을 dto에 대입 -->
+                            <th scope="row">[[${dto.bno}]]</th>     <!-- 게시글 번호 -->
+                            <td>
+                                <a th:href="|@{/board/read(bno = ${dto.bno})}&${link}|">    [[${dto.title}]]      </a>  <!-- 제목 -->
+                            </td>
+                            <td>[[${dto.writer}]]</td>      <!-- 작성자 -->
+                            <!-- /* #temporals 유틸리티 객체 (시간, 분, 초를 제외한 연-월-일만 출력)  */-->
+                            <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>     <!-- 작성날짜 -->
+                        </tr>
+                        </tbody>
                     </table>
+
                     <div class="float-end">
-                        <ul class="pagination felx-wrep">
-                            <li class="page-item" th:if="${responseDTO.prev}"> <!-- true면 표시 -->
+                        <ul class="pagination flex-wrap">
+                            <li class="page-item" th:if="${responseDTO.prev}">
                                 <a class="page-link" th:data-num="${responseDTO.start -1}">
-                                   Previous
+                                    Previous
                                 </a>
                             </li>
 
                             <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                                <li th:class="${responseDTO.page == i} ? 'page-item active':'page-item'">
+                                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
                                     <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                                 </li>
                             </th:block>
-                            <li>
-
-                            </li>
 
                             <li class="page-item" th:if="${responseDTO.next}">
-                                <a class="page-link" th:data-num="${responseDTO.end+1}">
-                                Next
+                                <a class="page-link" th:data-num="${responseDTO.end +1}">
+                                    Next
                                 </a>
                             </li>
                         </ul>
                     </div>
-                </div>  <!-- end card body-->
+
+                </div>  <!-- end card body -->
             </div>  <!-- end card -->
         </div>  <!-- end col -->
-    </div>  <!-- end row  -->
+    </div>  <!-- end row -->
 
-</div>
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">게시글 등록 완료</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>[[${result}]] 번째 게시글이 성공적으로 등록되었습니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                   <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>  <!-- end modal -->
+</div>  <!-- end layout fragment -->
 
 <script layout:fragment="script" th:inline="javascript">
-    //이벤트처리
-    //페이지 번호 클릭시 검색 창에 있는 form의 hidden으로 page추가 후 submit 처리...
-    //Clear 버튼 누를 경우 ..검색 조건 없이 /board/list 호출
-    console.log("script.....")
-
-    document.querySelector(".pagination").addEventListener("click",function (e) {
+    // 이벤트 처리..
+    // 페이지 번호 클리깃 검색 창에 있는 form 의 hidden 으로 page 추가 후 submit 처리...
+    // Clear 버튼 누를 경우 ... 검색 조건 없이 /board/list 호출
+    console.log("script...............")
+    // document : html 문서 그 자체를 의미함.
+    document.querySelector(".pagination").addEventListener("click", function (e) {
         e.preventDefault()
         e.stopPropagation()
 
-        const tartget = e.target
+        const target = e.target
 
-        //console.log(tartget)
-        if(tartget.tagName !== 'A'){ //A태그만 사용
+        // console.log(target)
+        if(target.tagName !== 'A'){      //A태그만 사용
             return
         }
 
-        const num = tartget.getAttribute("data-num")
-        const  formObj = document.querySelector("form")
+        const num = target.getAttribute("data-num")
+        const formObj = document.querySelector("form") //검색 form 태그.
+        // 정보를 추가하여 사용하겠다는 의미.
         formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
-        formObj.submit();
+        formObj.submit()
 
-    },false)
+    }, false)
 
-    document.querySelector(".clearBtn").addEventListener("click",function (e){
+    document.querySelector(".clearBtn").addEventListener("click", function (e){
         e.preventDefault()
         e.stopPropagation()
 
-        self.location ='/board/list'
+        self.location = '/board/list'
+
     },false)
 
+    //show modal
+    const result = [[${result}]]
+
+    const modal = new bootstrap.Modal(document.querySelector(".modal"))
+
+    if(result){
+        modal.show()
+    }
 
 </script>
 

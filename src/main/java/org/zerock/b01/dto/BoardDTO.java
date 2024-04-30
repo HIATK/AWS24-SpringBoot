@@ -1,5 +1,7 @@
 package org.zerock.b01.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +14,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDTO {
+
     private Long bno;
+
+    @NotEmpty//값이 있는지 없는지 확인함
+    @Size(min = 3, max = 100)
     private String title;
+
+    @NotEmpty
     private String content;
+
+    @NotEmpty
     private String writer;
+
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
