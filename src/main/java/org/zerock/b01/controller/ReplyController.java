@@ -2,9 +2,12 @@ package org.zerock.b01.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +31,22 @@ public class ReplyController {
     //응답객체를 만들어주는 ReponseEntity
     //request body 어노테이션은 전달해주는 데이터의 바디부분
 
-    public ResponseEntity <Map<String,Long>>register(
-            @RequestBody ReplyDTO replyDTO){
+    public Map<String,Long> register(
+            //이 값을 증명하라는 뜻이다
+            @Valid/*값검증*/ @RequestBody /*요청*/ ReplyDTO replyDTO,
+            BindingResult bindingResult)throws BindException {
         log.info(replyDTO);
+        //예외가 발생할수있도록 만들어주면된다
+        if(bindingResult.hasErrors()){
+            //이걸가지고 넘겨준다.
+            throw new BindException(bindingResult);
+        }
+
         Map<String, Long> resultMap = Map.of("rno",111L);
-        return ResponseEntity.ok(resultMap);
         //여기 까지는 동작이다.
+        return resultMap;
+        //값검증 1. bno 2. reply 3. 응답자
+        //rest방식으로 서버를 만들면 예외처리를 해야한다.
     }
 
 }

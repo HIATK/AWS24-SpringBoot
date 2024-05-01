@@ -1,0 +1,7 @@
+ajax는 Asynchronous JavaScript and XML 의 약자로
+말 그대로 JavaScript와 XML 을 이용한 비동기적 정보 교환 기법이다
+다만 요즘은 xml보다는 JSON을 주로 사용한다
+브라우저나 XML HttpReueqst를 이용해 전체 페이지를 새로 가져오지 않고도 페이지 일부만
+을 변경할 수 있도록 자바스크립으를 실행해 서버에 데이터만을 별도로 요청하는 기법이다
+HTTP프로토콜을 이용한 비동기 통신이며 브라우저는 정적 HTML파일과 CSS파일
+데이터를 어떻게 요청하면 되는지를 설명한 자바스크립

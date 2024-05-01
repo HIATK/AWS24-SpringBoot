@@ -55,6 +55,8 @@
                             <th scope="row">[[${dto.bno}]]</th>     <!-- 게시글 번호 -->
                             <td>
                                 <a th:href="|@{/board/read(bno = ${dto.bno})}&${link}|">    [[${dto.title}]]      </a>  <!-- 제목 -->
+                                <span class="badge progress-bar-success" style="background-color: #6f42c1">[[${dto.replyCount}]]</span>
+
                             </td>
                             <td>[[${dto.writer}]]</td>      <!-- 작성자 -->
                             <!-- /* #temporals 유틸리티 객체 (시간, 분, 초를 제외한 연-월-일만 출력)  */-->
