@@ -40,6 +40,7 @@ public class PageResponseDTO<E> {
         //pageRequestDTO 객체에서 페이지번호, 사이즈를 가져와 필드에 설정한다.
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
+        this.total = total;
 
         //dto리스트를 인자로받은 dtolist를 필드에 설정한다
         this.dtoList = dtoList;

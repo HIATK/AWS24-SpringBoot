@@ -5,48 +5,48 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.zerock.b01.domain.Reply;
+import org.springframework.data.domain.Pageable;
 import org.zerock.b01.dto.PageRequestDTO;
 import org.zerock.b01.dto.PageResponseDTO;
 import org.zerock.b01.dto.ReplyDTO;
 
-import java.awt.print.Pageable;
-
 @SpringBootTest
 @Log4j2
-
 public class ReplyServiceTests {
 
     @Autowired
     private ReplyService replyService;
 
     @Test
-    public void testRegister(){
+    public void testRegister() {
         ReplyDTO replyDTO = ReplyDTO.builder()
-                .replyText("댓글입니다12")
-                .replyer("댓글러")
-                .bno(192L)
+                .replyText("ReplyDTO Text")
+                .replyer("replyer")
+                .bno(209L)
                 .build();
-       // replyService.register(replyDTO);
-       log.info(replyService.register(replyDTO));
-
+        log.info("replyDTO : "+replyDTO);
+        log.info(replyService.register(replyDTO));
     }
 
     @Test
-    public void readTest(){
-        ReplyDTO replyDTO = replyService.read(208L);
+    public void testRead() {
+        ReplyDTO replyDTO = replyService.read(111L);
         log.info(replyDTO);
     }
 
 
     @Test
-    public void testGetListOfBoard(){
+    public void testGetListOfBoard() {
         Long bno = 191L;
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().build();
-        PageResponseDTO<ReplyDTO> result = replyService.getListOfBOard(bno, pageRequestDTO);
+        PageResponseDTO<ReplyDTO> result =  replyService.getListOfBOard(bno, pageRequestDTO);
+        log.info("totla" + result.getTotal());
         result.getDtoList().forEach(replyDTO -> log.info(replyDTO));
+    }
 
-
+    @Test
+    public void testDelete() {
+        Long rno = 1000L;
+        replyService.remove(rno);
     }
 }

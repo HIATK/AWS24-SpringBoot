@@ -3,6 +3,7 @@ package org.zerock.b01.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,12 +46,13 @@ public class BoardController {
         model.addAttribute("responseDTO",responseDTO);
 
     }
-
+                                    //page 691
+    @PreAuthorize("hasRole('USER')") // < - ROLE-USER 와 같은 의미다 특정 권환 사용자만 접근 가능하도록 설정
     @GetMapping("/register") //타임리프의 보드 레지스터를 찾으려고한다
     public void registerGet(){
 
     }
-
+    //page 691  end
     @PostMapping("/register")
     //@Valid어노테이션으로 검증이 필요한 boardDTO 타입의 객체 검증 결과를 담는
     //bindingResult 타입의 객체 그리고 리다이렉트시 속성을 전달하는 redirectAttributes타입의 객체를 파라미터로 받는다
@@ -87,6 +89,8 @@ public class BoardController {
 
     }
 
+    //p.693-
+    @PreAuthorize("hasRole('USER')")
     @GetMapping({"/read","/modify"}) //조회
     //받아와야 하기 때문에 리퀘스트를 사용한다.
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
@@ -95,6 +99,8 @@ public class BoardController {
         model.addAttribute("dto",boardDTO);
     }
 
+    //p.693-
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/modify")
     public String modify(PageRequestDTO pageRequestDTO ,
                          @Valid BoardDTO boardDTO,
@@ -124,6 +130,11 @@ public class BoardController {
 //
 //        return
 //    }
+
+
+
+    //p.693-
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/remove")
     public String remove(Long bno, RedirectAttributes redirectAttributes){
         log.info("remove post ,,," + bno);
@@ -131,5 +142,8 @@ public class BoardController {
         redirectAttributes.addFlashAttribute("result","remove");
         return "redirect:/board/list";
     }
+
+
+    //page 691 -end-
 
 }
