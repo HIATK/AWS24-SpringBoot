@@ -89,8 +89,8 @@ public class BoardController {
 
     }
 
-    //p.693-
-    @PreAuthorize("hasRole('USER')")
+    //p.693- p.709
+    @PreAuthorize("isAuthenticated()") //인증된 사용자만 접근 가능.
     @GetMapping({"/read","/modify"}) //조회
     //받아와야 하기 때문에 리퀘스트를 사용한다.
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
