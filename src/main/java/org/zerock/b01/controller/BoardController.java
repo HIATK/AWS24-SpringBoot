@@ -99,8 +99,9 @@ public class BoardController {
         model.addAttribute("dto",boardDTO);
     }
 
-    //p.693-
-    @PreAuthorize("hasRole('USER')")
+    //p.693-            //p.714 principal 에 username 이 boardDTO에 작성자와 같은지 확인한다.
+    //# == EL 표기법 때문에 사용한다.
+    @PreAuthorize("principal.username == #boardDTO.writer") //수정 처리는 게시물 작성자와 로그인한 사용자가 같은 경우...
     @PostMapping("/modify")
     public String modify(PageRequestDTO pageRequestDTO ,
                          @Valid BoardDTO boardDTO,
@@ -134,12 +135,12 @@ public class BoardController {
 
 
     //p.693-
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("principal.username == #boardDTO.writer")
     @PostMapping("/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes){
-        log.info("remove post ,,," + bno);
-        boardService.remove(bno);
-        redirectAttributes.addFlashAttribute("result","remove");
+    public String remove(BoardDTO boardDTO, RedirectAttributes redirectAttributes){
+        log.info("remove post ,,," + boardDTO.getBno());
+        boardService.remove(boardDTO.getBno());
+        redirectAttributes.addFlashAttribute("result","removed");
         return "redirect:/board/list";
     }
 

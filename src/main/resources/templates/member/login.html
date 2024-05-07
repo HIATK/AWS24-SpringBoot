@@ -22,6 +22,7 @@
             <div class="card-body">
                 <th:block th:if="${param.logout} != null">
                     <h1>LOGOUT...</h1>
+                    <a href="/member/login">로그인하기</a>
                 </th:block>
                 <!-- form 태그의 action 속성은 "/member/login 으로 동일한 경로에 POST방식으로 지정-->
                 <form id="registerForm" action="/member/login" method="post">
@@ -40,6 +41,7 @@
                             자동로그인
                         </label>
                     </div>
+                    <a href="/member/join">회원가입</a>
                     <div class="my-4">
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary submitBtn">LOGIN</button>
