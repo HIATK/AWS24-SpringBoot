@@ -3,15 +3,13 @@ package org.zerock.b01.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zerock.b01.domain.Member;
 import org.zerock.b01.dto.MemberSecurityDTO;
-import org.zerock.b01.repository.MemberRepository;
+import org.zerock.b01.repository.MemberRespository;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   //p/727  이제 안쓴다   private final PasswordEncoder passwordEncoder;
 
-    private final MemberRepository memberRepository;
+    private final MemberRespository memberRespository;
 
 
 
@@ -34,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("loadUserByUsername : "+username);
 
         //DB에 등록된 사용자 정보를 불러옴.
-        Optional<Member> result = memberRepository.getWithRoles(username);
+        Optional<Member> result = memberRespository.getWithRoles(username);
 
         //만약 사용자가 없다면 더 진행 되서는 안된다
         if(result.isEmpty()){

@@ -13,10 +13,10 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @Log4j2
-public class MemberRepositoryTests {
+public class MemberRespositoryTests {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRespository memberRespository;
 
 
     @Autowired
@@ -44,18 +44,25 @@ public class MemberRepositoryTests {
             if (i >= 90){
                 member.addRole(MemberRole.ADMIN);
             }
-            memberRepository.save(member);
+            memberRespository.save(member);
         });
 
     }
 
     @Test
     public void testRead(){
-        Optional<Member> result = memberRepository.getWithRoles("member100");
+        Optional<Member> result = memberRespository.getWithRoles("member100");
         Member member = result.orElseThrow();
 
         log.info(member);
         log.info(member.getRoleSet());
         member.getRoleSet().forEach(memberRole -> log.info(memberRole.name()));
+    }
+
+    @Test
+    public void testUpdate(){
+        String mid ="esicgoon@gmail.com";
+        String mpw = passwordEncoder.encode("54321");
+        memberRespository.updatePassword(mpw,mid);
     }
 }
