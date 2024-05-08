@@ -1,13 +1,16 @@
 package org.zerock.b01.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.zerock.b01.domain.Member;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, String> {
+public interface MemberRespository extends JpaRepository<Member, String> {
 
         //P.723
     //일반 회원일경우 불러야하고 소셜일 경우에는 안된다.
@@ -18,6 +21,14 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("select m from Member m where m.mid = :mid and m.social = false")
     Optional<Member> getWithRoles (String mid);
 
+    //p.753
+    @EntityGraph(attributePaths = "roleSet")
+    Optional<Member> findByEmail(String email);
+
+    @Modifying //이 어노테이션을 사용하면 쿼리에서 DML 처리가 가능케 함 (insert/update/delete)
+    @Transactional
+    @Query("update Member m set m.mpw = :mpw where m.mid = :mid")
+    void updatePassword(@Param("mpw")String password, @Param("mid") String mid );
 
 
 

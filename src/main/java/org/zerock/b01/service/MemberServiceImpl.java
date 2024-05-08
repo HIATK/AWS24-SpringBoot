@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.zerock.b01.domain.Member;
 import org.zerock.b01.domain.MemberRole;
 import org.zerock.b01.dto.MemberJoinDTO;
-import org.zerock.b01.repository.MemberRepository;
+import org.zerock.b01.repository.MemberRespository;
 
 
 @Log4j2
@@ -16,7 +16,7 @@ import org.zerock.b01.repository.MemberRepository;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
-    private final MemberRepository memberRepository;
+    private final MemberRespository memberRespository;
 
     private final ModelMapper modelMapper;
 
@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService{
         String mid = memberJoinDTO.getMid();
 
         //중복확인 있으면 트루 없으면 폴스
-        boolean exist = memberRepository.existsById(mid);
+        boolean exist = memberRespository.existsById(mid);
 
         //만약 이그짓이 트루면...
         if(exist){ //중복시. 실행
@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService{
         log.info("==================================================================\n"+
                 "==================================================================\n");
         //최종적으로 DB에 저장
-        memberRepository.save(member);
+        memberRespository.save(member);
 
 
 
