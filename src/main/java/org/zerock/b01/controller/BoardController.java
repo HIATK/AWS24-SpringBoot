@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.b01.domain.Member;
 import org.zerock.b01.dto.BoardDTO;
 import org.zerock.b01.dto.BoardListReplyCountDTO;
 import org.zerock.b01.dto.PageRequestDTO;
 import org.zerock.b01.dto.PageResponseDTO;
+import org.zerock.b01.repository.MemberRespository;
 import org.zerock.b01.service.BoardService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Log4j2
@@ -25,6 +30,7 @@ import org.zerock.b01.service.BoardService;
 public class BoardController {
 
     private final BoardService boardService;// 생성자 주입
+    private final MemberRespository memberRespository;
 
     //list로 겟 요청을 보낸다 list로 접속하면 이 매서드가 호출됨
     @GetMapping("/list")
@@ -146,5 +152,7 @@ public class BoardController {
 
 
     //page 691 -end-
+
+
 
 }

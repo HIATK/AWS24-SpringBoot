@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pie Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<canvas id="myChart"></canvas>
+<script>
+    const data = {
+        labels: ["Client-Server customers", "Other customers"],
+        datasets: [
+            {
+                data: [65, 35],
+                backgroundColor: ["#ff6384", "#36a2eb"],
+            },
+        ],
+    };
+
+    const config = {
+        type: "pie",
+        data: data,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Customers",
+                    position: "bottom",
+                },
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        const datapoints = ctx.chart.data.datasets[0].data;
+                        const total = datapoints.reduce((total, datapoint) => {
+                            return total + datapoint;
+                        });
+                        const percentage = ((value / total) * 100).toFixed(0) + "%";
+                        return percentage;
+                    },
+                    color: "#fff",
+                },
+            },
+        },
+    };
+
+    const myChart = new Chart(document.getElementById("myChart"), config);
+</script>
+</body>
+</html>
